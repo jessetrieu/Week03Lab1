@@ -6,6 +6,7 @@ package servlets;
  * and open the template in the editor.
  */
 
+import beans.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -33,30 +34,32 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
             
-            request.setAttribute("username", username);
-            request.setAttribute("password", password);
+            String userName = request.getParameter("user");
+            String password = request.getParameter("pass");
+            
+            User u = new User(userName, password);
+            
+            request.setAttribute("username", u.getUserName());
+            request.setAttribute("password", u.getPassword());
             
             
-            if(username == null || password == null){
+            if(u.getUserName() == null || u.getPassword() == null){
                 getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
             }
             
-            if(username.trim().isEmpty() || password.trim().isEmpty()){
+            if(u.getUserName().trim().isEmpty() || u.getPassword().trim().isEmpty()){
                 request.setAttribute("errorMessage", "Both values are required!");
                 getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
             
             }
             
             UserService user = new UserService();
-            if(user.login(username, password) == true){
+            if(user.login(u.getUserName(), u.getPassword()) == true){
                 getServletContext().getRequestDispatcher("/WEB-INF/mainPage.jsp").forward(request, response);
             }   
             
-            if(user.login(username, password) == false){
+            if(user.login(u.getUserName(), u.getPassword()) == false){
                 request.setAttribute("errorMessage", "Invalid username or password!");
                 getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
             }       
