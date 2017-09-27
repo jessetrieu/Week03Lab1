@@ -3,8 +3,8 @@
     Created on : Sep 18, 2017, 1:06:15 PM
     Author     : 579957
 --%>
-
-<c:import url="/includes/header/html" />
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:import url="/includes/header.html" />
 
         <div>
             <form action="Login" method="POST">
